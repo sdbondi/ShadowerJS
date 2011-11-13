@@ -21,4 +21,4 @@ Usage:
 
 ## License
 
-See the file [LICENSE](https://github.com//LICENSE.txt)
+See the file [LICENSE](https://github.com/sdbondi/Shadower/blob/master/LICENSE.txt)
