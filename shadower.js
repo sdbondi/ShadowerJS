@@ -37,8 +37,11 @@
 
 	    this.elem = elem;
 	    this.elemPos = _position(elem);
-      this.isText = (!!elem.firstChild && elem.firstChild.nodeType == 3); // TEXTNODE
 	    this.options = this.checkOptions(options);
+      if (!this.options.shadowType || this.options.shadowType == 'auto')
+        this.isText = (!!elem.firstChild && elem.firstChild.nodeType == 3); // TEXTNODE
+      else 
+        this.isText = (this.options.shadowType == 'text');
 	    
 	    this.bindEvents();
 	  },
@@ -51,11 +54,12 @@
 		    var x = this.elemPos.left - e.clientX;
 		    var y = this.elemPos.top - e.clientY;
 		    
-		    var distance = Math.sqrt(Math.abs(x)^2 + Math.abs(y)^2),
-		    blur = this.options.diffusion * Math.round(distance / 10);
+        var blur = 0;
+        if (this.options.diffusion) {
+		      var distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+		      blur = this.options.diffusion * Math.round(distance / 50);
+        }
         
-        document.getElementById('box').innerHTML = x + ', ' + y + '=' + Math.round(distance);
-
 		    x *= this.options.factor;
 		    y *= this.options.factor;
         
@@ -71,7 +75,8 @@
 	    return {
 		    color: options.color || 'black',
 		    diffusion: +options.diffusion,
-		    factor: +options.factor
+		    factor: +options.factor,
+        shadowType: options.shadowType || 'auto'
 	    };
 	  },
 	  
